@@ -56,10 +56,8 @@ class TasksController extends Controller
      */
     public function show(Task $task)
     {
-        if(Auth::user()->id !== $task->user_id) {
-            return $this->error('', 'You are not authorized to take this request', 401);
-        }
-        return new TasksResource($task);
+        return $this->isNotAuthorize($task)? $this->isNotAuthorize($task) :  new TasksResource($task);
+        // return new TasksResource($task);
     }
 
     /**
@@ -93,8 +91,18 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-        //
+        // $task->delete();
+
+        // return response(null, 204);
+
+        return $this->isNotAuthorize($task)? $this->isNotAuthorize($task) : $task->delete();
+    }
+
+    private function isNotAuthorize($task) {
+        if(Auth::user()->id !== $task->user_id) {
+            return $this->error('', 'You are not authorized to take this request', 401);
+        }
     }
 }
