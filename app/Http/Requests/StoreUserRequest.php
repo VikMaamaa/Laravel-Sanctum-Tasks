@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Doctrine\Inflector\Rules\English\Rules;
+
 use Illuminate\Foundation\Http\FormRequest;
+
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -15,7 +16,7 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +27,17 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
 
+
         return [
+            // 'name' => 'required|string|max:255',
+            // 'email' => 'required|string|max:255|unique:users,email',
+            // 'password' => 'required|confirmed'
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'unique'],
-            'password' => ['required', 'confirmed', Password::defaults()]
+            'email' => ['required', 'string', 'max:255', 'unique:users,email'],
+            'password' => ['required' , 'confirmed' ,Password::defaults()],
+            // 'password_confirmation' => ['required', 'confirmed']
+            // 'email' => ['required', 'string', 'max:255', 'unique:users,email'],
+            // 'password' => ['required', 'confirmed', Password::defaults()]
         ];
     }
 }

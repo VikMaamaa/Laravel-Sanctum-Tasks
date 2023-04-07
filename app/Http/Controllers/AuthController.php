@@ -18,8 +18,10 @@ class AuthController extends Controller
 
 
     public function register(StoreUserRequest $request) {
+        // dd($request->all());
 
-        $request->validated($request->all());
+            $request->validated($request->all());
+
 
         $user = User::create([
             'name' => $request->name,
@@ -31,6 +33,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $user->createToken('API Token of '. $user->name)->plainTextToken
         ]);
+
     }
 
     public function logout() {
